@@ -33,9 +33,9 @@ const PORT = Number(process.env.PORT) || 4000;
 async function start() {
 	try {
 		await ensureDatabase();
-		await ensureContactMessagesPhoneColumn();
 		await sequelize.authenticate();
 		await sequelize.sync({ alter: process.env.DB_ALTER === 'true' });
+		await ensureContactMessagesPhoneColumn();
 		app.listen(PORT, () => {
 			console.log(`Server running on http://localhost:${PORT}`);
 		});
