@@ -15,6 +15,12 @@ export async function ensureContactMessagesPhoneColumn() {
 	const client = new pg.Client(getPgConfig(targetDb));
 	await client.connect();
 	try {
+		// Ensure table exists first
+		const tableRes = await client.query(
+			`SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='contact_messages'`
+		);
+		if (tableRes.rowCount === 0) return;
+
 		const existsRes = await client.query(
 			`SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='contact_messages' AND column_name='phone'`
 		);
